@@ -1,2 +1,1 @@
-# pylla
-TEAM PYLLA
+# PyLla
