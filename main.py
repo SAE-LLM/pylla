@@ -1,4 +1,3 @@
 import pylla
 
-print(pylla.StableDiffusion())
-print(pylla.LLAMA2())
+pylla.text_to_image(prompt="A cat", output_path="image_de_chat.png")
