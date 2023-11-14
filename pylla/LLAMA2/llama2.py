@@ -1,5 +1,3 @@
-# llama2.py
-
 class LLAMA2AI:
     def __init__(self) -> None:
         pass

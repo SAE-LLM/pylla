@@ -1,5 +1,3 @@
-# automatic_1111.py
-
 from typing import Dict
 
 class TextToImageOptions:
