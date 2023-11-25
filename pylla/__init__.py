@@ -1,6 +1,9 @@
 __version__ = '1.0'
 
 from .StableDiffusion.automatic_1111 import StableDiffusionAI, TextToImageOptions
+from .StableDiffusion.utils import ModelDownloader
+def download_model() -> None:
+    ModelDownloader.download_model()
 
 def text_to_image(prompt: str, output_path: str , num_inference_steps: int, width: int, height: int) -> None:
     stable_diffusion_instance = StableDiffusionAI()

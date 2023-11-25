@@ -1,18 +1,22 @@
 from diffusers import StableDiffusionPipeline
 import torch
-
+import os
 class TextToImageOptions:
     def __init__(self, text: str, output_path: str, num_inference_steps: int, width: int, height: int) -> None:
         self.text = text
         self.output_path = output_path
-        self.num_inference_steps  = num_inference_steps 
-        self.width  = width 
-        self.height  = height 
+        self.num_inference_steps = num_inference_steps 
+        self.width = width 
+        self.height = height 
 
 class StableDiffusionAI:
-    def __init__(self, model_id: str = "stabilityai/stable-diffusion-2") -> None:
-        self.model_id = model_id
-        self.pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32, safety_checker = None)
+    def __init__(self, model_path: str = "models/stable-diffusion-2.ckpt") -> None:
+        self.pipe = StableDiffusionPipeline.from_pretrained(
+            model_path,
+            torch_dtype=torch.float32,
+            safety_checker=None,
+            local_files_only=True
+        )
 
     def text_to_image(self, options: TextToImageOptions) -> None:
         print("---Text To Image---")

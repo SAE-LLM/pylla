@@ -1,2 +1,3 @@
 pylla/*/__pycache__/
 pylla/__pycache__
+pylla/StableDiffusion/models/*.ckpt
