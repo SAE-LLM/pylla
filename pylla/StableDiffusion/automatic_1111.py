@@ -10,7 +10,7 @@ class TextToImageOptions:
         self.height  = height 
 
 class StableDiffusionAI:
-    def __init__(self, model_id: str = "prompthero/openjourney") -> None:
+    def __init__(self, model_id: str = "stabilityai/stable-diffusion-2") -> None:
         self.model_id = model_id
         self.pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32, safety_checker = None)
 
