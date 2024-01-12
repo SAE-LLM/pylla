@@ -2,7 +2,7 @@ import requests
 import os
 from tqdm import tqdm
 
-model_url = "https://huggingface.co/stabilityai/stable-diffusion-2/resolve/main/768-v-ema.ckpt"
+model_url = "https://huggingface.co/runwayml/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.ckpt"
 output_directory = "pylla/StableDiffusion/models"
 output_path = os.path.join(output_directory, "stable-diffusion.ckpt")
 

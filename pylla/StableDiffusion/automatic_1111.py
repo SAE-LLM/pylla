@@ -42,12 +42,12 @@ class DepthToImageOptions:
     height: int = 256
 
 class StableDiffusionAI:
-    def __init__(self, model_path: str = "models/stable-diffusion-2.ckpt") -> None:
+    def __init__(self, model_path: str = "runwayml/stable-diffusion-v1-5") -> None:
         self.pipe = StableDiffusionPipeline.from_pretrained(
             model_path,
             torch_dtype=torch.float32,
             safety_checker=None,
-            local_files_only=True
+            local_files_only=False,
         )
 
     def text_to_image(self, options: TextToImageOptions) -> None:
