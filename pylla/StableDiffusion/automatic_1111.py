@@ -47,7 +47,7 @@ class StableDiffusionAI:
             model_path,
             torch_dtype=torch.float32,
             safety_checker=None,
-            local_files_only=False,
+            local_files_only=False
         )
 
     def text_to_image(self, options: TextToImageOptions) -> None:
@@ -72,7 +72,7 @@ class StableDiffusionAI:
         width = options.width
         height = options.height
         image = utils.get_image(img_url)
-        image = self.pipe(prompt, image, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
+        image = self.pipe(prompt=prompt, image=image, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
         image.save(options.output_path)
 
     def in_painting(self, options: InPaintingOptions) -> None:
