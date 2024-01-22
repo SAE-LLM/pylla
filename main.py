@@ -2,12 +2,17 @@ import pylla
 
 def main():
     prompt = "Code me a function that returns the sum of two numbers"
-    print("Verification du modèle llama2 en cours...\n")
+    print("Verification du modèle en cours...\n")
     response = pylla.llama2_generator(prompt)
     print("Fin de la vérification du modèle.\n")
     print(f"Question -> {prompt}\n")
     print(f"Réponse -> {response}\n")
 
+    print("Verification du modèle tintin en cours...\n")
+    prompt = "Tintin, the adventurous reporter, has uncovered exclusive leaks about Grand Theft Auto VI. In a dimly lit room, surrounded by classified documents and computer screens, Tintin is carefully revealing the details of the highly anticipated game. Rockstar Games' secrets are exposed as Tintin navigates through the virtual world of Grand Theft Auto VI with a sly grin on his face."
+    image = pylla.generate_tintin_img(prompt)
+    image.save("tintin.png")
+    
     print("Verification du modèle StableDiffusion en cours...\n")
     prompt = "A cute cat"
     img_url = "pylla/resources/image_bank/forest.jpeg"

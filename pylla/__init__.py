@@ -1,5 +1,6 @@
 __version__ = '1.0'
 
+from .Tintinia import generate_tintin_img
 from .Llama2 import llama2_generator
 from pylla.StableDiffusion.automatic_1111 import StableDiffusionAI, TextToImageOptions, ImageToImageOptions, \
     InPaintingOptions, DepthToImageOptions
