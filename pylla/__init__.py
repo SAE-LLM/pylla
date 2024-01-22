@@ -1,7 +1,9 @@
 __version__ = '1.0'
 
+from .Llama2 import llama2_generator
 from .StableDiffusion.automatic_1111 import StableDiffusionAI, TextToImageOptions
 from .StableDiffusion.utils import ModelDownloader
+
 def download_model() -> None:
     ModelDownloader.download_model()
 
