@@ -8,6 +8,6 @@ if %errorlevel% neq 0 (
 )
 
 rem Installer les modules
-pip install numpy pandas matplotlib scikit-learn tensorflow torch jupyter diffusers transformers accelerate ctransformers tk
+pip install numpy pandas matplotlib scikit-learn tensorflow torch jupyter diffusers transformers accelerate ctransformers tk customtkinter sentencepiece
 
 echo L'installation des modules Python pour le machine learning est terminée.
