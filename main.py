@@ -10,7 +10,7 @@ class ModelLauncherApp:
         master.geometry("600x300")
 
         self.model_selector_label = ttk.Label(master, text="Choisissez un modèle:")
-        self.model_selector = ttk.Combobox(master, values=["Tintin", "Llama2", "StableDiffusion"])
+        self.model_selector = ttk.Combobox(master, values=["Llama2", "StableDiffusion"])
 
         self.param_prompt_label = ttk.Label(master, text="Prompt:")
         self.param_prompt_entry = ttk.Entry(master, width=50)
@@ -74,10 +74,7 @@ class ModelLauncherApp:
         self.launch_button.grid_remove()
 
         # Afficher les champs nécessaires en fonction du modèle sélectionné
-        if selected_model == "Tintin":
-            self.param_prompt_label.grid(row=1, column=0, pady=5, sticky="w")
-            self.param_prompt_entry.grid(row=1, column=1, pady=5, sticky="w")
-        elif selected_model == "Llama2":
+        if selected_model == "Llama2":
             self.param_prompt_label.grid(row=1, column=0, pady=5, sticky="w")
             self.param_prompt_entry.grid(row=1, column=1, pady=5, sticky="w")
             self.param_num_steps_label.grid(row=2, column=0, pady=5, sticky="w")
@@ -101,19 +98,10 @@ class ModelLauncherApp:
         selected_model = self.model_selector.get()
         prompt = self.param_prompt_entry.get()
 
-        if selected_model == "Tintin":
-            self.launch_tintin_model(prompt)
-        elif selected_model == "Llama2":
+        if selected_model == "Llama2":
             self.launch_llama2_model(prompt)
         elif selected_model == "StableDiffusion":
             self.launch_stable_diffusion_model(prompt)
-
-    def launch_tintin_model(self, prompt):
-        print("Lancement du modèle Tintin...")
-        num_inference_steps = int(self.param_num_steps_entry.get())
-        image = pylla.generate_tintin_img(prompt, num_inference_steps)
-        image.save("output_image_tintin.png")
-        print("Fin du modèle Tintin.\n")
 
     def launch_llama2_model(self, prompt):
         print("Lancement du modèle Llama2...")
