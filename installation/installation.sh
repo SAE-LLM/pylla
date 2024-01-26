@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Vérifier si Python 3.7.9 est installé
+if python3 --version 2>&1 | grep -q "3.7.9"; then
+    echo "Python 3.7.9 est installé. Continuer l'installation des modules..."
+else
+    echo "Python 3.7.9 n'est pas installé. Veuillez installer Python 3.7.9 avec pip avant d'exécuter ce script."
+    exit 1
+fi
+
 # Vérifier si le script est lancé avec sudo
 if [ "$EUID" -ne 0 ]; then
     SUDO="sudo"
