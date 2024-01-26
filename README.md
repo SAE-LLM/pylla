@@ -76,3 +76,15 @@ generate_tintin_img(prompt,num_inference_steps)
     <prompt> : text prompt to generate the image
     [<num_inference_steps>] : number of iteration : default: 20
 ```
+
+### UI
+
+Simply run the main.py script:
+
+```py
+python3 main.py
+```
+
+## Documentation
+
+Documentation is available [here](pylla.html)
