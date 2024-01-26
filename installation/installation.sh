@@ -19,7 +19,7 @@ else
 fi
 
 # Installer les modules
-$SUDO pip3 install numpy pandas matplotlib scikit-learn tensorflow torch jupyter diffusers transformers accelerate ctransformers tk customtkinter sentencepiece
+$SUDO pip3 install numpy pandas matplotlib scikit-learn tensorflow torch jupyter diffusers transformers accelerate ctransformers tk customtkinter sentencepiece Pillow
 
 # Vérifier si apt-get est installé (pour Linux)
 if command -v apt-get >/dev/null 2>&1; then

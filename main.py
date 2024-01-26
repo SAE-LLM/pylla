@@ -3,6 +3,8 @@ import tkinter.messagebox
 from tkinter import filedialog
 import customtkinter
 import pylla
+import os
+from PIL import Image, ImageTk
 
 customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
 customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
@@ -13,6 +15,9 @@ class ModelLauncherApp(customtkinter.CTk):
 
         self.title("Model Launcher")
         self.geometry(f"{1200}x{700}")
+        image = Image.open("pylla.png")
+        photo = ImageTk.PhotoImage(image)
+        self.iconphoto(False, photo)
 
         self.current_model = -1
 
@@ -101,7 +106,9 @@ class ModelLauncherApp(customtkinter.CTk):
 
     def launch_stable_diffusion_model(self, prompt):
         print("Lancement du modèle StableDiffusion...")
-        image_source = self.param_image_entry.cget("text")
+        image_source = None
+        if self.param_image_entry.cget("text") and self.param_image_entry.cget("text") != "Cliquez sur parcourir..." :
+            image_source = self.param_image_entry.cget("text")
         num_inference_steps = int(self.param_num_steps_entry.get())
         width = int(self.param_width_entry.get()) // 8 * 8  # La largeur doit être un multiple de 8
         height = int(self.param_height_entry.get()) // 8 * 8  # La hauteur doit être un multiple de 8
@@ -118,7 +125,7 @@ class ModelLauncherApp(customtkinter.CTk):
 
     def launch_helsinki_model(self, prompt):
             print("Lancement du modèle Helsinki...")
-            self.progress_status.grid(row=7, column=2)  
+            self.progress_status.grid(row=7, column=2)      
             response = pylla.helsinki_generator(prompt)
             self.progress_status.grid_remove()
             print(f"Réponse -> {response}\n")
