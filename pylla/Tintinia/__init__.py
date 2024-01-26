@@ -1,1 +1,0 @@
-from .generator import generate_tintin_img
