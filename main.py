@@ -10,6 +10,9 @@ customtkinter.set_appearance_mode("System")  # Modes: system (default), light, d
 customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
 class ModelLauncherApp(customtkinter.CTk):
+    """
+    Application for launching various models using a graphical interface.
+    """
     def __init__(self):
         super().__init__()
 
@@ -84,10 +87,18 @@ class ModelLauncherApp(customtkinter.CTk):
         self.launch_button.grid_remove()
 
     def browse_image(self):
+        """
+        Opens a file dialog for selecting an image file.
+        """
         file_path = filedialog.askopenfilename()
         self.param_image_entry.configure(text=file_path)
 
     def launch_selected_model(self):
+        """
+        Launches the selected model based on user input.
+        """
+        self.launch_button.configure(text="En cours...")
+        self.update_idletasks()
         prompt = self.param_prompt_entry.get("0.0", "end")
         print(self.current_model)
         if self.current_model == 0:
@@ -96,8 +107,12 @@ class ModelLauncherApp(customtkinter.CTk):
             self.launch_stable_diffusion_model(prompt)
         elif self.current_model == 2:
             self.launch_helsinki_model(prompt)
+        self.launch_button.configure(text="Lancer")
 
     def launch_llama2_model(self, prompt):
+        """
+        Launches the LLama2 model and displays the generated response.
+        """
         print("Lancement du modèle Llama2...")
         response = pylla.llama2_generator(prompt)
         print(f"Réponse -> {response}\n")
@@ -105,6 +120,9 @@ class ModelLauncherApp(customtkinter.CTk):
         print("Fin du modèle Llama2.\n")
 
     def launch_stable_diffusion_model(self, prompt):
+        """
+        Launches the Stable Diffusion model and displays the generated image or message.
+        """
         print("Lancement du modèle StableDiffusion...")
         image_source = None
         if self.param_image_entry.cget("text") and self.param_image_entry.cget("text") != "Cliquez sur parcourir..." :
@@ -124,15 +142,21 @@ class ModelLauncherApp(customtkinter.CTk):
         print("Fin du modèle StableDiffusion.\n")
 
     def launch_helsinki_model(self, prompt):
-            print("Lancement du modèle Helsinki...")
-            self.progress_status.grid(row=7, column=2)      
-            response = pylla.helsinki_generator(prompt)
-            self.progress_status.grid_remove()
-            print(f"Réponse -> {response}\n")
-            tkinter.messagebox.showinfo("Réponse Helsinki: ", response)
-            print("Fin du modèle Helsinki.\n")
+        """
+        Launches the Helsinki model and displays the generated response.
+        """
+        print("Lancement du modèle Helsinki...")
+        self.progress_status.grid(row=7, column=2)      
+        response = pylla.helsinki_generator(prompt)
+        self.progress_status.grid_remove()
+        print(f"Réponse -> {response}\n")
+        tkinter.messagebox.showinfo("Réponse Helsinki: ", response)
+        print("Fin du modèle Helsinki.\n")
 
     def sidebar_button_event(self, model):
+        """
+        Handles events when a sidebar button is clicked, adjusting the displayed fields based on the selected model.
+        """
          # Masquer tous les champs
         self.param_prompt_label.grid_remove()
         self.param_prompt_entry.grid_remove()
@@ -176,14 +200,23 @@ class ModelLauncherApp(customtkinter.CTk):
         self.launch_button.grid(row=6, column=2)
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
+        """
+        Changes the appearance mode of the application.
+        """
         customtkinter.set_appearance_mode(new_appearance_mode)
 
     def change_scaling_event(self, new_scaling: str):
+        """
+        Changes the UI scaling factor of the application.
+        """
         new_scaling_float = int(new_scaling.replace("%", "")) / 100
         customtkinter.set_widget_scaling(new_scaling_float)
 
 
 def main():
+    """
+    Main function to run the Model Launcher application.
+    """
     app = ModelLauncherApp()
     app.mainloop()
 
