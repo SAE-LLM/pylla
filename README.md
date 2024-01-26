@@ -3,6 +3,14 @@
 
 PyLlA is a python package to use Large Langage Models to generate images based on text prompts in your own projects.
 
+## Screenshots
+
+![home](screenshots/home.png)
+![home_light](screenshots/light.png)
+![llma2](screenshots/llama2.png)
+![stablediffusion](screenshots/stablediffusion.png)
+![helsinki](screenshots/helsinki.png)
+![helsinkiprompt](screenshots/helsinkiprompt.png)
 
 ## Installation
 
@@ -65,16 +73,11 @@ image_to_image(self,options)
     height: int = 256
 ```
 
-### Tintinia:
-Load the tintinia model:
+### Helsinki:
+Generate an translation FR-EN with Helsinki:
 ```python
-load_diffusion_pipleine()
-```
-Generate an image based on a text prompt with tintinia:
-```python
-generate_tintin_img(prompt,num_inference_steps)
-    <prompt> : text prompt to generate the image
-    [<num_inference_steps>] : number of iteration : default: 20
+helsinki_generator(prompt)
+    <prompt> : text prompt to translate (in french)
 ```
 
 ### UI
@@ -87,4 +90,4 @@ python3 main.py
 
 ## Documentation
 
-Documentation is available [here](pylla.html)
+Documentation is available [here](https://sae-llm.github.io/pylla/)
