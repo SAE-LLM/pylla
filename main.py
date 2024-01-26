@@ -185,7 +185,7 @@ class ModelLauncherApp(customtkinter.CTk):
             self.param_prompt_entry.grid(row=0, column=2, padx=(10, 10), pady=(2, 0), sticky="nsew")
             self.param_image_label.grid(row=1, column=1, pady=5, sticky="w")
             self.param_image_entry.grid(row=1, column=2, pady=10, sticky="nsew")
-            self.browse_button.grid(row=1, column=3, pady=5, sticky="e")
+            self.browse_button.grid(row=1, column=2, pady=5, sticky="e")
             self.param_num_steps_label.grid(row=2, column=1, pady=5, sticky="w")
             self.param_num_steps_entry.grid(row=2, column=2, pady=5, sticky="e")
             self.param_width_label.grid(row=3, column=1, pady=5, sticky="w")
