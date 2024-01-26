@@ -3,6 +3,14 @@
 
 PyLlA is a python package to use Large Langage Models to generate images based on text prompts in your own projects.
 
+## Screenshots
+
+![home](screenshots/home.png)
+![home_light](screenshots/light.png)
+![llma2](screenshots/llama2.png)
+![stablediffusion](screenshots/stablediffusion.png)
+![helsinki](screenshots/helsinki.png)
+![helsinkiprompt](screenshots/helsinkiprompt.png)
 
 ## Installation
 
