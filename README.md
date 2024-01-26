@@ -87,4 +87,4 @@ python3 main.py
 
 ## Documentation
 
-Documentation is available [here](pylla.html)
+Documentation is available [here](https://sae-llm.github.io/pylla/)
