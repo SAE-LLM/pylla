@@ -11,8 +11,8 @@ class Pylla:
         # PARAMS
 
             # PROMPTS
-        self.__global_prompt = None
-        self.__style_prompt = None
+        self.__global_prompt = ""
+        self.__style_prompt = ""
 
             # OTHER
         self.__inference = 20
@@ -31,18 +31,18 @@ class Pylla:
         reset_stable_diffusion()
         reset_helsinki()
 
-    def set_header_prompts(self, positive_prompt=None, global_prompt=None,  negative_prompt=None, style_prompt=None):
+    def set_header_prompts(self, global_prompt=None, style_prompt=None):
         if global_prompt:
             self.__global_prompt = global_prompt
         if style_prompt:
-            self.style_prompt = style_prompt
+            self.__style_prompt = style_prompt
 
-    def set_inference(self, inference=None, width=None, height=None):
+    def set_inference(self, inference):
         if inference:
             self.__inference = inference
 
-    def llama2(self, positive_prompt, negative_prompt=None):
-        prompt = str(self.__global_prompt) + " " +  str(self.style_prompt) + " " + str(positive_prompt) + " " + str(negative_prompt)
+    def llama2(self, positive_prompt):
+        prompt = str(self.__global_prompt) + "+" +  str(self.__style_prompt) + "+" + str(positive_prompt)
 
         self.__display_infos(0, prompt)
         res = self.__llama2.generate(prompt)
@@ -51,7 +51,7 @@ class Pylla:
         
 
     def stable_diffusion_txt2img(self, positive_prompt, negative_prompt=None, output_path="output_txt2img.png", width=256, height=256):
-        prompt = str(self.__global_prompt) + " " +  str(self.style_prompt)
+        prompt = str(self.__global_prompt) + "+" +  str(self.__style_prompt) + "+"  + str(positive_prompt)
         n_prompt = str(negative_prompt)
         if not output_path.endswith(".png"):
             output_path += ".png"
@@ -61,15 +61,15 @@ class Pylla:
             n_prompt=negative_prompt,
             output_path=output_path,
             num_inference_steps=self.__inference,
-            width=width,
-            height=height
+            width=int(width),
+            height=int(height)
         )
 
-        self.__display_infos(1, prompt, n_prompt)
+        self.__display_infos(1, prompt, n_prompt=n_prompt, width=width, height=height)
         self.__stable_diffusion.text_to_image(options)
 
-    def stable_diffusion_img2img(self, positive_prompt, img_path, negative_prompt=None, output_path="output_txt2img.png", width=256, height=256):
-        prompt = str(self.__global_prompt) + " " +  str(self.style_prompt)
+    def stable_diffusion_img2img(self, positive_prompt, img_path, negative_prompt=None, output_path="output_img2img.png", width=256, height=256):
+        prompt = str(self.__global_prompt) + "+" +  str(self.__style_prompt) + "+"  + str(positive_prompt)
         n_prompt = str(negative_prompt)
         if not output_path.endswith(".png"):
             output_path += ".png"
@@ -80,15 +80,15 @@ class Pylla:
             img_url=img_path,
             output_path=output_path,
             num_inference_steps=self.__inference,
-            width=width,
-            height=height
+            width=int(width),
+            height=int(height)
         )
 
-        self.__display_infos(1, prompt, n_prompt)
+        self.__display_infos(1, prompt, n_prompt=n_prompt, width=width, height=height)
         self.__stable_diffusion.image_to_image(options)
 
-    def stable_diffusion_inpainting(self, positive_prompt, img_path, mask_path, negative_prompt=None, output_path="output_txt2img.png", width=256, height=256):
-        prompt = str(self.__global_prompt) + " " +  str(self.style_prompt)
+    def stable_diffusion_inpainting(self, positive_prompt, img_path, mask_path, negative_prompt=None, output_path="output_inpainting.png", width=256, height=256):
+        prompt = str(self.__global_prompt) + "+" +  str(self.__style_prompt) + "+"  + str(positive_prompt)
         n_prompt = str(negative_prompt)
         if not output_path.endswith(".png"):
             output_path += ".png"
@@ -100,11 +100,11 @@ class Pylla:
             mask_url=mask_path,
             output_path=output_path,
             num_inference_steps=self.__inference,
-            width=width,
-            height=height
+            width=int(width),
+            height=int(height)
         )
         
-        self.__display_infos(1, prompt, n_prompt)
+        self.__display_infos(1, prompt, n_prompt=n_prompt, width=width, height=height)
         self.__stable_diffusion.in_painting(options)
 
     def helsinki(self, prompt):
@@ -144,12 +144,16 @@ def main():
 
     pylla = Pylla()
 
-    #TRADUCTION
-    prompt = "J'utilise Helsinki pour traduire mon texte!"
+    pylla.set_header_prompts(global_prompt="The output response you write should be short of one paragraph maximum")
+    prompt = "Write me a children's story about a little girl named Agathe, who assumes the throne of the Frozen Queen."
     
-    res = pylla.helsinki(prompt)
+    prompt = pylla.llama2(prompt)
 
-    print(f"Result: {res}")
+    pylla.set_header_prompts(global_prompt=" ", style_prompt="""from pixar, au naturel, PS2, PS1, hyper detailed, digital art, 
+    trending in artstation, cinematic lighting, studio quality, smooth render, unreal engine 5 rendered, 
+    octane rendered, art style by klimt and nixeu and ian sprigger and wlop and krenz cushart.""")
+
+    pylla.stable_diffusion_txt2img(prompt, negative_prompt="germany, hanztel, gretel", width=512, height=512)
 
 
 
