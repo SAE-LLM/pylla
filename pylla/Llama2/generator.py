@@ -1,0 +1,22 @@
+from ctransformers import AutoModelForCausalLM
+
+def llama2_generator(prompt):
+    # URL model LLAMA2: https://huggingface.co/TheBloke/Llama-2-13B-Ensemble-v5-GGUF
+    """
+    Generates text completion using the LLAMA2 language model.
+
+    Args:
+        prompt (str): The input text prompt for text generation.
+
+    Returns:
+        str: The generated text completion based on the input prompt.
+    """
+    model = AutoModelForCausalLM.from_pretrained(
+        "TheBloke/Llama-2-13B-Ensemble-v5-GGUF",
+        model_file="llama-2-13b-ensemble-v5.Q5_K_M.gguf",
+        model_type="llama",
+        gpu_layers=0
+    )
+
+    response = model(prompt)
+    return response
