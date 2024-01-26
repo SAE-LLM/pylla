@@ -114,7 +114,8 @@ class ModelLauncherApp(customtkinter.CTk):
         Launches the LLama2 model and displays the generated response.
         """
         print("Lancement du modèle Llama2...")
-        response = pylla.llama2_generator(prompt)
+        llama = pylla.Llama2AI()
+        response = llama.generate(prompt)
         print(f"Réponse -> {response}\n")
         tkinter.messagebox.showinfo("LLama2: ", response)
         print("Fin du modèle Llama2.\n")
@@ -124,6 +125,7 @@ class ModelLauncherApp(customtkinter.CTk):
         Launches the Stable Diffusion model and displays the generated image or message.
         """
         print("Lancement du modèle StableDiffusion...")
+        stable = pylla.StableDiffusionAI()
         image_source = None
         if self.param_image_entry.cget("text") and self.param_image_entry.cget("text") != "Cliquez sur parcourir..." :
             image_source = self.param_image_entry.cget("text")
@@ -132,10 +134,27 @@ class ModelLauncherApp(customtkinter.CTk):
         height = int(self.param_height_entry.get()) // 8 * 8  # La hauteur doit être un multiple de 8
 
         if image_source:
-            pylla.image_to_image(prompt, image_source, "output_image_stableDiffusion.png", num_inference_steps, width, height)
+            options = pylla.ImageToImageOptions(
+                prompt=prompt,
+                n_prompt="",
+                img_url=image_source,
+                output_path="output_image_stableDiffusion.png",
+                num_inference_steps=num_inference_steps,
+                width=width,
+                height=height
+            )
+            stable.image_to_image(options)
             tkinter.messagebox.showinfo("StableDiffusion", "Image Successfully generated")
         else:
-            pylla.text_to_image(prompt, "output_image_stableDiffusion.png", num_inference_steps, width, height)
+            options = pylla.TextToImageOptions(
+                prompt=prompt,
+                n_prompt="",
+                output_path="output_image_stableDiffusion.png",
+                num_inference_steps=num_inference_steps,
+                width=width,
+                height=height
+            )
+            stable.text_to_image(options)
             tkinter.messagebox.showinfo("StableDiffusion", "Image Successfully generated")
 
 
@@ -145,9 +164,10 @@ class ModelLauncherApp(customtkinter.CTk):
         """
         Launches the Helsinki model and displays the generated response.
         """
+        helsinki = pylla.HelsinkiAI()
         print("Lancement du modèle Helsinki...")
         self.progress_status.grid(row=7, column=2)      
-        response = pylla.helsinki_generator(prompt)
+        response = hellsinki.generate(prompt)
         self.progress_status.grid_remove()
         print(f"Réponse -> {response}\n")
         tkinter.messagebox.showinfo("Réponse Helsinki: ", response)
@@ -211,7 +231,6 @@ class ModelLauncherApp(customtkinter.CTk):
         """
         new_scaling_float = int(new_scaling.replace("%", "")) / 100
         customtkinter.set_widget_scaling(new_scaling_float)
-
 
 def main():
     """

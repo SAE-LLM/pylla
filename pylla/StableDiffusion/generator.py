@@ -1,8 +1,7 @@
 import torch
-from diffusers import StableDiffusionPipeline
 from dataclasses import dataclass
-import pylla.StableDiffusion.utils as utils
-
+from diffusers import StableDiffusionPipeline
+import pylla.StableDiffusion.utils
 
 @dataclass
 class TextToImageOptions:
@@ -10,6 +9,7 @@ class TextToImageOptions:
     Options for text-to-image generation using Stable Diffusion AI.
     """
     prompt: str
+    n_prompt: str
     output_path: str
     num_inference_steps: int
     width: int = 256
@@ -21,6 +21,7 @@ class ImageToImageOptions:
     Options for image-to-image generation using Stable Diffusion AI.
     """
     prompt: str
+    n_prompt: str
     img_url: str
     output_path: str
     num_inference_steps: int
@@ -33,21 +34,9 @@ class InPaintingOptions:
     Options for in-painting using Stable Diffusion AI.
     """
     prompt: str
+    n_prompt: str
     img_url: str
     mask_url: str
-    output_path: str
-    num_inference_steps: int
-    width: int = 256
-    height: int = 256
-
-@dataclass
-class DepthToImageOptions:
-    """
-    Options for depth-to-image generation using Stable Diffusion AI.
-    """
-    prompt: str
-    n_prompt: int
-    img_url: str
     output_path: str
     num_inference_steps: int
     width: int = 256
@@ -79,13 +68,17 @@ class StableDiffusionAI:
             options (TextToImageOptions): Options for text-to-image generation.
         """
         print("---Text To Image---")
-        print(f"Text: {options.prompt}")
         print(f"Output Image Path: {options.output_path}")  
+        print(f"Text: {options.prompt}")
         prompt = options.prompt
+        n_prompt = options.n_prompt
         num_inference_steps = options.num_inference_steps
         width = options.width
         height = options.height
-        image = self.pipe(prompt, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
+        if n_prompt:
+            image = self.pipe(prompt, num_inference_steps=num_inference_steps, negative_prompt=n_prompt, width=width, height=height).images[0]
+        else:
+            image = self.pipe(prompt, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
         image.save(options.output_path)
 
     def image_to_image(self, options: ImageToImageOptions) -> None:
@@ -99,13 +92,17 @@ class StableDiffusionAI:
         print(f"Text: {options.prompt}")
         print(f"Image URL: {options.img_url}")
         print(f"Output Image Path: {options.output_path}")
-        prompt = options.prompt
+        prompt = self.global_prompt + "\n" + options.prompt        
+        n_prompt = options.n_prompt
         img_url = options.img_url
         num_inference_steps = options.num_inference_steps
         width = options.width
         height = options.height
         image = utils.get_image(img_url)
-        image = self.pipe(prompt=prompt, image=image, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
+        if n_prompt:
+            image = self.pipe(prompt=prompt, image=image, negative_prompt=n_prompt, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
+        else:
+            image = self.pipe(prompt=prompt, image=image, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
         image.save(options.output_path)
 
     def in_painting(self, options: InPaintingOptions) -> None:
@@ -120,7 +117,8 @@ class StableDiffusionAI:
         print(f"Image URL: {options.img_url}")
         print(f"Mask URL: {options.mask_url}")
         print(f"Output Image Path: {options.output_path}")
-        prompt = options.prompt
+        prompt = self.global_prompt + "\n" + options.prompt
+        n_prompt = options.n_prompt
         img_url = options.img_url
         mask_url = options.mask_url
         num_inference_steps = options.num_inference_steps
@@ -128,28 +126,9 @@ class StableDiffusionAI:
         height = options.height
         image = utils.get_image(img_url)
         mask = utils.get_image(mask_url)
-        image = self.pipe(prompt=prompt, image=image, mask=mask, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
-        image.save(options.output_path)
+        if n_prompt:
+            image = self.pipe(prompt=prompt, image=image, mask=mask, negative_prompt=n_prompt, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
+        else:
+             image = self.pipe(prompt=prompt, image=image, mask=mask, num_inference_steps=num_inference_steps, width=width, height=height).images[0]
 
-    def depth_to_image(self, options: DepthToImageOptions) -> None:
-        """
-        Generates an image from depth information using Stable Diffusion AI.
-
-        Args:
-            options (DepthToImageOptions): Options for depth-to-image generation.
-        """
-        print("---Depth To Image---")
-        print(f"Text: {options.prompt}")
-        print(f"Number of texts: {options.n_prompt}")
-        print(f"Image URL: {options.img_url}")
-        print(f"Output Image Path: {options.output_path}")
-        prompt = options.prompt
-        n_prompt = options.n_prompt
-        img_url = options.img_url
-        num_inference_steps = options.num_inference_steps
-        width = options.width
-        height = options.height
-        image = utils.get_image(img_url)
-        image = self.pipe(prompt=prompt, image=image, negative_prompt=n_prompt, num_inference_steps=num_inference_steps,
-                          width=width, height=height).images[0]
         image.save(options.output_path)
